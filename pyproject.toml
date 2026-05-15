@@ -1,7 +1,37 @@
 [project]
 name = "tifonator"
 version = "0.1.0"
-description = "Add your description here"
+description = "AI-generated podcast episodes in the style of Tifo Football"
 readme = "README.md"
 requires-python = ">=3.14"
-dependencies = []
+
+dependencies = [
+    # Phase 1: Scrape
+    "feedparser>=6.0",
+    "httpx>=0.27",
+    "tqdm>=4.66",
+    # Phase 2: Transcribe + Train
+    "openai-whisper>=20240930",
+    "transformers>=4.40",
+    "peft>=0.10",           # LoRA fine-tuning
+    "datasets>=2.19",
+    "accelerate>=0.29",
+    "bitsandbytes>=0.43",   # 4-bit quantisation
+    "torch>=2.3",
+    # Phase 3: Generate
+    "TTS>=0.22",            # Coqui XTTS voice cloning
+    "gradio>=4.29",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.0",
+    "pytest-asyncio>=0.23",
+    "ruff>=0.4",
+]
+
+[project.scripts]
+tifonator = "tifonator.app:main"
+
+[tool.ruff]
+line-length = 100

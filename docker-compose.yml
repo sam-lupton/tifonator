@@ -1,0 +1,8 @@
+services:
+  app:
+    build: .
+    ports:
+      - "7860:7860"
+    volumes:
+      - ./models:/app/models   # mount fine-tuned weights
+      - ./data:/app/data
