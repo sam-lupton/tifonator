@@ -1,4 +1,5 @@
 """Gradio UI — entry point for non-technical users."""
+
 from __future__ import annotations
 import gradio as gr
 

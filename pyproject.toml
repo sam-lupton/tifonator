@@ -6,24 +6,30 @@ readme = "README.md"
 requires-python = ">=3.14"
 
 dependencies = [
-    # Phase 1: Scrape
+    # Phase 1: Scrape (always required)
     "feedparser>=6.0",
     "httpx>=0.27",
     "tqdm>=4.66",
-    # Phase 2: Transcribe + Train
-    "openai-whisper>=20240930",
-    "transformers>=4.40",
-    "peft>=0.10",           # LoRA fine-tuning
-    "datasets>=2.19",
-    "accelerate>=0.29",
-    "bitsandbytes>=0.43",   # 4-bit quantisation
-    "torch>=2.3",
-    # Phase 3: Generate
-    "TTS>=0.22",            # Coqui XTTS voice cloning
-    "gradio>=4.29",
+    "pydantic>=2.7",
+    "typer>=0.12",
 ]
 
 [project.optional-dependencies]
+# Install per phase: uv sync --extra train  /  uv sync --extra generate
+train = [
+    "mlx-whisper>=0.4",
+    "mlx-lm>=0.18",
+    "transformers>=4.40",
+    "peft>=0.10",
+    "datasets>=2.19",
+    "accelerate>=0.29",
+]
+generate = [
+    "TTS>=0.22",
+    "gradio>=4.29",
+]
+
+[dependency-groups]
 dev = [
     "pytest>=8.0",
     "pytest-asyncio>=0.23",
@@ -32,6 +38,10 @@ dev = [
 
 [project.scripts]
 tifonator = "tifonator.app:main"
+
+[tool.pytest.ini_options]
+addopts = "-m 'not integration'"
+markers = ["integration: hits real external services"]
 
 [tool.ruff]
 line-length = 100
